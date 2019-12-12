@@ -1,0 +1,54 @@
+{% extends "shop/base.html" %}
+{% load static %}
+
+{% block title %}
+     {% if category %}{{ category.name }}{% else %}Магазин{% endif %}
+{% endblock %}
+
+{% block content %}
+         <div id="sidebar">
+             <h3>Категории</h3>
+             <ul>
+                 <li {% if not category %}class="selected"{% endif %}>
+                    <a href="{% url "shop:product_list" %}" >Главная</a>
+                 </li>
+                 {% for c in categories %}
+                     <li {% if category.slug == c.slug %}class="selected" {% endif %}>
+                        <a href="{{ c.get_absolute_url }}">{{ c.name }}</a>
+                     </li>
+                 {% endfor %}
+             </ul>
+         </div>
+
+
+         <div id="main" class="product-list">
+             <h1>{% if category %}{{ category.name }}{% else %}Выберите категорию{% endif %}</h1>
+         {% if not category %}
+
+             <div class="col-md-9">
+                <p>Мы предлагаем высококачественное страйкбольное оборудование по выгодным ценам. У нас вы всегда можете найти различное оружие для страйкбола, всё необходимое снаряжение (очки, шлемы, перчатки и многое другое), а также сопутствующие расходные материалы – шары, гранаты, спреи. Кроме того, представлен широкий ассортимент оружейных магазинов, аккумуляторов и прицелов для комфортной игры. Все представленные товары на сайте есть в наличии на складе.
+
+Страйкбольный интернет-магазин Airsoftstore предлагает гибкие условия оплаты и быструю доставку заказов для жителей Москвы, Подмосковья, регионов России, а также стран СНГ.
+
+Мы ценим лояльность клиентов, а потому для постоянных покупателей предусмотрена система накопительных скидок, действующая на весь ассортимент. Приобретая у нас страйкбольное оружие, снаряжение для страйкбола и расходные материалы, вы можете дополнительно экономить на каждой последующей покупке.</p>
+
+              <figure class="fig"><img src={% static "image/Airsoft-hertfordshire-2.jpg"  %} width="800" height="400" class="center-block"></figure>
+
+        </div>
+
+         {% endif %}
+             {% for product in products %}
+                 <div class="item">
+                     <a href="{{ product.get_absolute_url }}">
+                         <img src="{% if product.image %}{{ product.image.url }}{% else %}{% static "image/no_image.png" %}{% endif %}">
+                     </a>
+                     <div class="caption">
+                     <a href="{{ product.get_absolute_url }}">{{ product.name }}</a>
+                     <br>
+                     {{ product.price }} Тенге
+                     </div>
+                 </div>
+             {% endfor %}
+         </div>
+
+{% endblock %}
